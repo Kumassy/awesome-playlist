@@ -29,7 +29,7 @@ logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
-music_list = [df.values[i] for i in range(500)]
+music_list = [df.values[i] for i in range(10)]
 
 
 
@@ -44,7 +44,7 @@ for music in music_list:
         api.add_songs_to_playlist(playlist, search_result['song_hits'][0]['track']['storeId'])
 
     # sleep for a while
-    time.sleep(random.uniform(0.5, 10.0))
+    time.sleep(random.uniform(2.0, 4.0))
 
 
 # print(json.dumps(search_result['song_hits']))
