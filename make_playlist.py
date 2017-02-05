@@ -6,7 +6,8 @@ import json
 import pandas as pd
 from IPython import embed
 from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
-
+import random
+import time
 
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
@@ -28,7 +29,7 @@ logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
-music_list = [df.values[i] for i in range(10)]
+music_list = [df.values[i] for i in range(500)]
 
 
 
@@ -41,6 +42,9 @@ for music in music_list:
         # embed()
         logger.debug('Add to the playlist: %s / %s' % (search_result['song_hits'][0]['track']['title'], search_result['song_hits'][0]['track']['artist']))
         api.add_songs_to_playlist(playlist, search_result['song_hits'][0]['track']['storeId'])
+
+    # sleep for a while
+    time.sleep(random.uniform(0.5, 10.0))
 
 
 # print(json.dumps(search_result['song_hits']))
