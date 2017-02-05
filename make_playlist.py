@@ -4,6 +4,7 @@ from gmusicapi import Mobileclient
 import os
 import json
 import pandas as pd
+from IPython import embed
 
 # api = Mobileclient()
 # api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS)
@@ -16,4 +17,5 @@ import pandas as pd
 # print(json.dumps(search_result['song_hits']))
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
-print df
+embed()
+# print df[0]
