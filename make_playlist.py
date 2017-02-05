@@ -5,17 +5,42 @@ import os
 import json
 import pandas as pd
 from IPython import embed
+from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
 
-# api = Mobileclient()
-# api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS)
-#
-# search_result = api.search("サクラあっぱれーしょん")
-#
-# playlist = api.create_playlist("てすとてすと")
-# api.add_songs_to_playlist(playlist, search_result['song_hits'][0]['track']['storeId'])
 
-# print(json.dumps(search_result['song_hits']))
+logger = getLogger(__name__)
+stream_handler = StreamHandler()
+file_handler = FileHandler(filename="log.txt")
+stream_handler.setLevel(DEBUG)
+file_handler.setLevel(DEBUG)
+logger.setLevel(DEBUG)
+
+file_handler.setFormatter(Formatter('[%(asctime)s] %(message)s'))
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
+
+
+api = Mobileclient()
+api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS)
+
+playlist = api.create_playlist("ぼくのかんがえたさいきょうのぷれいりすと")
+logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
-embed()
-# print df[0]
+# embed()
+music_list = [df.values[i] for i in range(10)]
+
+
+
+for music in music_list:
+    logger.debug('Searching %s / %s from %s ...' % (music[6], music[7], music[2]))
+    search_result = api.search(music[6] + " " + music[7])
+    logger.debug('%d songs found' % len(search_result['song_hits']))
+
+    if len(search_result['song_hits']) > 0:
+        # embed()
+        logger.debug('Add to the playlist: %s / %s' % (search_result['song_hits'][0]['track']['title'], search_result['song_hits'][0]['track']['artist']))
+        api.add_songs_to_playlist(playlist, search_result['song_hits'][0]['track']['storeId'])
+
+
+# print(json.dumps(search_result['song_hits']))
