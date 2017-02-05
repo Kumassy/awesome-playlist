@@ -10,6 +10,11 @@ import random
 import time
 import re
 
+
+def is_invalid_artist(artist):
+    return re.search(r"インストゥルメンタル", artist)
+
+
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
 file_handler = FileHandler(filename="log.txt")
@@ -52,6 +57,3 @@ for music in music_list:
 
 
 # print(json.dumps(search_result['song_hits']))
-
-def is_invalid_artist(artist):
-    return re.search(r"インストゥルメンタル", artist)
