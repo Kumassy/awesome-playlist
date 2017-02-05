@@ -29,7 +29,7 @@ logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
-music_list = [df.values[i] for i in range(10)]
+music_list = [df.values[i] for i in range(500)]
 
 
 
