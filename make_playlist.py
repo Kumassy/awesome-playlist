@@ -8,6 +8,7 @@ from IPython import embed
 from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
 import random
 import time
+import re
 
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
@@ -29,13 +30,16 @@ logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
-music_list = [df.values[i] for i in range(500)]
+music_list = [df.values[i] for i in range(1000)]
 
 
 
 for music in music_list:
     logger.debug('Searching %s / %s from %s ...' % (music[6], music[7], music[2]))
-    search_result = api.search(music[6] + " " + music[7])
+
+    if is_invalid_artist(music[7]):
+        continue
+    search_result = api.search('%s %s' % (music[6], music[7]))
     logger.debug('%d songs found' % len(search_result['song_hits']))
 
     if len(search_result['song_hits']) > 0:
@@ -48,3 +52,6 @@ for music in music_list:
 
 
 # print(json.dumps(search_result['song_hits']))
+
+def is_invalid_artist(artist):
+    return re.search(r"インストゥルメンタル", artist)
