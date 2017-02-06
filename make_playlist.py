@@ -15,8 +15,8 @@ def is_invalid_artist(artist):
     return re.search(r"インストゥルメンタル", artist)
 
 def filter_song(song_list, title, artist):
-    t = filter((lambda song: re.search(title, song['track']['title'])), song_list)
-    return filter((lambda song: re.search(artist, song['track']['artist'])), t)
+    t = filter((lambda song: re.search(title.decode('utf-8'), song['track']['title'])), song_list)
+    return filter((lambda song: re.search(artist.decode('utf-8'), song['track']['artist'])), t)
 
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
