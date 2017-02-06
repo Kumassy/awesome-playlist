@@ -14,6 +14,9 @@ import re
 def is_invalid_artist(artist):
     return re.search(r"インストゥルメンタル", artist)
 
+def filter_song(song_list, title, artist):
+    t = filter((lambda song: re.search(title, song['track']['title'])), song_list)
+    return filter((lambda song: re.search(artist, song['track']['artist'])), t)
 
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
@@ -47,10 +50,13 @@ for music in music_list:
     search_result = api.search('%s %s' % (music[6], music[7]))
     logger.debug('%d songs found' % len(search_result['song_hits']))
 
-    if len(search_result['song_hits']) > 0:
+    song_list = filter_song(search_result['song_hits'], music[6], music[7])
+    logger.debug('Reduced to %d songs' % len(song_list))
+
+    if len(song_list) > 0:
         # embed()
-        logger.debug('Add to the playlist: %s / %s' % (search_result['song_hits'][0]['track']['title'], search_result['song_hits'][0]['track']['artist']))
-        api.add_songs_to_playlist(playlist, search_result['song_hits'][0]['track']['storeId'])
+        logger.debug('Add to the playlist: %s / %s' % (song_list[0]['track']['title'], song_list[0]['track']['artist']))
+        api.add_songs_to_playlist(playlist, song_list[0]['track']['storeId'])
 
     # sleep for a while
     time.sleep(random.uniform(2.0, 4.0))
