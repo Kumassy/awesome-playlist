@@ -31,7 +31,7 @@ logger.addHandler(file_handler)
 
 
 api = Mobileclient()
-api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS)
+api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS, locale=u'ja_JP')
 
 playlist = api.create_playlist("ぼくのかんがえたさいきょうのぷれいりすと")
 logger.debug('playlist was created: %s' % playlist)

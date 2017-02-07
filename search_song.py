@@ -9,9 +9,12 @@ import time
 import re
 import sys
 
+def filter_song(song_list, title, artist):
+    t = filter((lambda song: re.search(title.decode('utf-8'), song['track']['title'])), song_list)
+    return filter((lambda song: re.search(artist.decode('utf-8'), song['track']['artist'])), t)
 
 api = Mobileclient()
-api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS)
+api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS, locale=u'ja_JP')
 
 
 if len(sys.argv) != 3:
@@ -20,4 +23,6 @@ if len(sys.argv) != 3:
 print('Searching %s / %s ...' % (sys.argv[1], sys.argv[2]))
 search_result = api.search('%s %s' % (sys.argv[1], sys.argv[2]))
 song_list = search_result['song_hits']
+
+filterd_list = filter_song(song_list, sys.argv[1], sys.argv[2])
 embed()
