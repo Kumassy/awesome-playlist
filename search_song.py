@@ -25,4 +25,10 @@ search_result = api.search('%s %s' % (sys.argv[1], sys.argv[2]))
 song_list = search_result['song_hits']
 
 filterd_list = filter_song(song_list, sys.argv[1], sys.argv[2])
+
+if len(song_list) > 0:
+    print('%d songs found' % len(song_list))
+if len(filterd_list) > 0:
+    print('Exact match: %s / %s' % (filterd_list[0]['track']['title'], filterd_list[0]['track']['artist']))
+
 embed()
