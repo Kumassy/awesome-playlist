@@ -10,8 +10,8 @@ import re
 import sys
 
 def filter_song(song_list, title, artist):
-    t = filter((lambda song: re.search(title.decode('utf-8'), song['track']['title'])), song_list)
-    return filter((lambda song: re.search(artist.decode('utf-8'), song['track']['artist'])), t)
+    t = filter((lambda song: re.search(re.escape(title.decode('utf-8')), song['track']['title'])), song_list)
+    return filter((lambda song: re.search(re.escape(artist.decode('utf-8')), song['track']['artist'])), t)
 
 api = Mobileclient()
 api.login(os.environ['GMUSIC_USER'], os.environ['GMUSIC_PW'], Mobileclient.FROM_MAC_ADDRESS, locale=u'ja_JP')

@@ -15,8 +15,8 @@ def is_invalid_artist(artist):
     return re.search(r"インストゥルメンタル", artist)
 
 def filter_song(song_list, title, artist):
-    t = filter((lambda song: re.search(title.decode('utf-8'), song['track']['title'])), song_list)
-    return filter((lambda song: re.search(artist.decode('utf-8'), song['track']['artist'])), t)
+    t = filter((lambda song: re.search(re.escape(title.decode('utf-8')), song['track']['title'])), song_list)
+    return filter((lambda song: re.search(re.escape(artist.decode('utf-8')), song['track']['artist'])), t)
 
 logger = getLogger(__name__)
 stream_handler = StreamHandler()
@@ -38,11 +38,12 @@ logger.debug('playlist was created: %s' % playlist)
 
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
-music_list = [df.values[i] for i in range(1000)]
+music_list = [df.values[i] for i in range(1270, 1315)]
 
 
 
-for music in music_list:
+for index, music in enumerate(music_list):
+    logger.debug('Trying %d / %d songs ...' % (index + 1, len(music_list)))
     logger.debug('Searching %s / %s from %s ...' % (music[6], music[7], music[2]))
 
     if is_invalid_artist(music[7]):
