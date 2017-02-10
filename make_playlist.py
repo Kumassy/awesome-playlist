@@ -39,8 +39,9 @@ logger.debug('playlist was created: %s' % playlist)
 df = pd.read_csv('anison.csv', quotechar='"', escapechar="\\")
 # embed()
 music_list = [df.values[i] for i in range(1270, 1315)]
-
-
+# music_list = [df.values[i] for i in range(8475, 16047)]
+# music_list = df.values[8475:]
+# music_list = df.values[15413:]
 
 for index, music in enumerate(music_list):
     logger.debug('Trying %d / %d songs ...' % (index + 1, len(music_list)))
